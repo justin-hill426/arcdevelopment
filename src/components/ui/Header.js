@@ -2,6 +2,9 @@ import React from 'react'
 import { AppBar } from '@mui/material'
 import { Toolbar } from '@mui/material'
 import { useScrollTrigger } from '@mui/material';
+import { Box } from '@mui/material';
+
+import logo from '../../assets/logo.svg'
 
 function ElevationScroll(props) {
   const { children} = props;
@@ -15,16 +18,29 @@ function ElevationScroll(props) {
   });
 }
 
-
 const Header = () => {
   return (
-    <ElevationScroll>
-       <AppBar>
-          <Toolbar>
-            Arc Development
+    <>
+      <ElevationScroll>
+        <AppBar>
+          <Toolbar disableGutters>
+            <Box
+              component="img"
+              sx={{
+                height: "7em",
+              }}
+              alt="Company Logo"
+              src={logo}
+            ></Box>
           </Toolbar>
         </AppBar>
-    </ElevationScroll>
+      </ElevationScroll>
+      <Toolbar
+        sx={{
+          marginBottom: "3em",
+        }}
+      />
+    </>
   )
 }
 
