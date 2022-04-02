@@ -19,9 +19,12 @@ const theme = createTheme({
     }
   },
   typography: {
-    h3: {
-      fontWeight: 300
-    }
+    tab: {
+      fontFamily: "Raleway",
+      fontWeight: 700,
+      textTransform: "none",
+      fontSize: "1rem",
+    } 
   }
 });
 

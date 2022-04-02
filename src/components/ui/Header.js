@@ -3,6 +3,7 @@ import { AppBar } from '@mui/material'
 import { Toolbar } from '@mui/material'
 import { useScrollTrigger } from '@mui/material';
 import { Box } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
 
 import logo from '../../assets/logo.svg'
 
@@ -32,6 +33,23 @@ const Header = () => {
               alt="Company Logo"
               src={logo}
             ></Box>
+            <Tabs
+              sx={{
+                marginLeft: "auto",
+              }}
+            >
+              <Tab 
+                sx={{
+                  minWidth: 10,
+                  marginLeft: "25px",
+                }} 
+                label="Home"
+              />
+              <Tab label="Services"/>
+              <Tab label="The Revolution"/>
+              <Tab label="About Us"/>
+              <Tab label="Contact Us"/>
+            </Tabs>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
