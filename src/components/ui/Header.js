@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AppBar } from '@mui/material'
 import { Toolbar } from '@mui/material'
 import { useScrollTrigger } from '@mui/material';
 import { Box } from '@mui/material';
 import { Tabs, Tab } from '@mui/material';
+import { Button } from '@mui/material';
 
 import logo from '../../assets/logo.svg'
 
@@ -20,6 +21,13 @@ function ElevationScroll(props) {
 }
 
 const Header = () => {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (e, value) => {
+    setValue(value)
+  }
+
+
   return (
     <>
       <ElevationScroll>
@@ -34,6 +42,9 @@ const Header = () => {
               src={logo}
             ></Box>
             <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
               sx={{
                 marginLeft: "auto",
               }}
@@ -79,6 +90,19 @@ const Header = () => {
                 label="Contact Us"
               />
             </Tabs>
+            <Button 
+              variant="contained" 
+              color="secondary"
+              sx={(theme) => ({
+                ...theme.typography.estimate,
+                borderRadius: "50px",
+                marginLeft: "50px",
+                marginRight: "25px",
+                height: "45px",
+              })}
+            >
+              Free Estimate
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

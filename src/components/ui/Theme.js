@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material";
-import { green } from "@mui/material/colors";
 
 const arcBlue = "#0B72B9";
 const arcOrange = "#FFBA60";
@@ -24,6 +23,13 @@ const theme = createTheme({
       fontWeight: 700,
       textTransform: "none",
       fontSize: "1rem",
+      color: "white",
+    },
+    estimate: {
+      fontFamily: "Pacifico",
+      fontSize: "1rem",
+      textTransform: "none",
+      color: "white",
     } 
   }
 });
