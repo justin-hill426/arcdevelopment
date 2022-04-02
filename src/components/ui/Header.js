@@ -39,16 +39,45 @@ const Header = () => {
               }}
             >
               <Tab 
-                sx={{
+                sx={(theme) => ({
+                  ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
-                }} 
+                })} 
                 label="Home"
               />
-              <Tab label="Services"/>
-              <Tab label="The Revolution"/>
-              <Tab label="About Us"/>
-              <Tab label="Contact Us"/>
+              <Tab 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  minWidth: 10,
+                  marginLeft: "25px",
+                })} 
+                label="Services"
+              />
+              <Tab 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  minWidth: 10,
+                  marginLeft: "25px",
+                })} 
+                label="The Revolution"
+              />
+              <Tab 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  minWidth: 10,
+                  marginLeft: "25px",
+                })} 
+                label="About Us"
+              />
+              <Tab 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  minWidth: 10,
+                  marginLeft: "25px",
+                })} 
+                label="Contact Us"
+              />
             </Tabs>
           </Toolbar>
         </AppBar>
