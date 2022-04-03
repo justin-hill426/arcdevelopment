@@ -38,7 +38,7 @@ const Header = () => {
               sx={{
                 height: "7em",
               }}
-              alt="Company Logo"
+              alt="Company Logos"
               src={logo}
             ></Box>
             <Tabs
