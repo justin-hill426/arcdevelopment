@@ -31,7 +31,7 @@ const theme = createTheme({
       textTransform: "none",
       color: "white",
     } 
-  }
+  },
 });
 
 export default theme
