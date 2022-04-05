@@ -87,7 +87,7 @@ const Header = () => {
             <Tabs
               value={value}
               onChange={handleChange}
-              textColor="secondary"
+              textColor= "white"
               sx={{
                 marginLeft: "auto",
               }}
@@ -97,6 +97,7 @@ const Header = () => {
                   ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
+                  opacity: value === 0 ? 1 : 0.7,
                 })} 
                 component={Link}
                 to="/"
@@ -107,6 +108,7 @@ const Header = () => {
                   ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
+                  opacity: value === 1 ? 1 : 0.7,
                 })} 
                 component={Link}
                 to="/services"
@@ -120,6 +122,7 @@ const Header = () => {
                   ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
+                  opacity: value === 2 ? 1 : 0.7,
                 })}
                 component={Link}
                 to="/revolution"
@@ -130,6 +133,7 @@ const Header = () => {
                   ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
+                  opacity: value === 3 ? 1 : 0.7,
                 })} 
                 component={Link}
                 to="/about"
@@ -140,6 +144,7 @@ const Header = () => {
                   ...theme.typography.tab,
                   minWidth: 10,
                   marginLeft: "25px",
+                  opacity: value === 4 ? 1 : 0.7,
                 })} 
                 component={Link}
                 to="/contact"
@@ -164,12 +169,56 @@ const Header = () => {
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
+              sx={(theme) => ({
+                "& .MuiMenu-paper": {
+                  backgroundColor:theme.palette.common.blue,
+                  color: 'white'
+                }
+              })}
               MenuListProps={{onMouseLeave: handleClose}}
             >
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/services">Services</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/customsoftware">Custom Software Development</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/mobileapps">Mobile App Development</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/websitedevelopment">Website Development</MenuItem>
+              <MenuItem 
+                onClick={() => {handleClose(); setValue(1)}} 
+                component={Link} 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  opacity: 0.7,
+                  "&:hover": {
+                    opacity: 1
+                  }
+                })}
+                to="/customsoftware"
+              >
+                Custom Software Development
+              </MenuItem>
+              <MenuItem 
+                onClick={() => {handleClose(); setValue(1)}} 
+                component={Link} 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  opacity: 0.7,
+                  "&:hover": {
+                    opacity: 1
+                  }
+                })}
+                to="/mobileapps"
+              >
+                Mobile App Development
+              </MenuItem>
+              <MenuItem 
+                onClick={() => {handleClose(); setValue(1)}} 
+                component={Link} 
+                sx={(theme) => ({
+                  ...theme.typography.tab,
+                  opacity: 0.7,
+                  "&:hover": {
+                    opacity: 1
+                  }
+                })}
+                to="/websitedevelopment"
+              >
+                Website Development
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
