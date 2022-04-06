@@ -1,16 +1,7 @@
-import React, { useState, useEffect} from 'react'
-import { AppBar, autocompleteClasses, IconButton } from '@mui/material'
-import { Toolbar } from '@mui/material'
-import { useScrollTrigger } from '@mui/material';
-import { Box } from '@mui/material';
-import { Tabs, Tab } from '@mui/material';
-import { Button } from '@mui/material';
+import React, { useState, useEffect, useMemo } from 'react'
+import { AppBar, IconButton, Toolbar, useScrollTrigger, Box, Tabs,
+   Tab, Button, Menu, MenuItem, useMediaQuery, useTheme, SwipeableDrawer, List, ListItemButton, ListItemText } from '@mui/material'
 import { Link } from 'react-router-dom';
-import { Menu, MenuItem } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material';
-import { SwipeableDrawer } from '@mui/material';
-import { List, ListItemButton, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.svg'
 
@@ -58,14 +49,14 @@ const Header = () => {
     console.log(`Value index is now ${value}`)
   }
 
-  const menuOptions = [
+  const menuOptions = useMemo(() => ([
     {name: 'Services', link: '/services', activeIndex: 1, selectedIndex: 0},
     {name: 'Custom Software Development', link: '/customsoftware', activeIndex: 1, selectedIndex: 1},
     {name: 'Mobile App Develpment', link: '/mobileapps', activeIndex: 1, selectedIndex: 2},
     {name: 'Website Development', link: '/websites', activeIndex: 1, selectedIndex: 3},
-  ]
+  ]), [])
 
-  const routes = [
+  const routes = useMemo(() => ([
     {name: "Home", link: "/", activeIndex: 0},
     {
       name: "Services", 
@@ -78,7 +69,7 @@ const Header = () => {
     {name: "The Revolution", link: "/revolution", activeIndex: 2},
     {name: "About Us", link: "/about", activeIndex: 3},
     {name: "Contact Us", link: "/contact", activeIndex: 4},
-  ]
+  ]), [anchorEl])
 
   useEffect(() => {
     [...menuOptions, ...routes].forEach(route => {

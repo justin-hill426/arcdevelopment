@@ -4,6 +4,7 @@ import theme from './components/ui/Theme';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Services from './components/Services';
 import Home from './components/Home';
+import Footer from './components/ui/Footer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path='/' element={<Home/>}/>
             <Route path='/services' element={<Services/>}/>
           </Routes>
+          <Footer/>
       </ThemeProvider>
     </Router>
   );
