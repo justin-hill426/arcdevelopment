@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { AppBar } from '@mui/material'
+import { AppBar, autocompleteClasses, IconButton } from '@mui/material'
 import { Toolbar } from '@mui/material'
 import { useScrollTrigger } from '@mui/material';
 import { Box } from '@mui/material';
@@ -7,7 +7,10 @@ import { Tabs, Tab } from '@mui/material';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Menu, MenuItem } from '@mui/material';
-
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material';
+import { SwipeableDrawer } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.svg'
 
 function ElevationScroll(props) {
@@ -25,26 +28,30 @@ function ElevationScroll(props) {
 const Header = () => {
   const [value, setValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null)
-  const [open, setOpen] = useState(false)
+  const theme = useTheme()
+  const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const matches = useMediaQuery(theme.breakpoints.down("md"))
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  const handleChange = (e, value) => {
-    setValue(value)
+  const handleChange = (e, newValue) => {
+    setValue(newValue)
   };
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget)
-    setOpen(true)
+    setOpenMenu(true)
   }
 
   const handleClose = (e) => {
     setAnchorEl(null)
-    setOpen(false)
+    setOpenMenu(false)
   }
 
   const handleMenuItemClick = (e, i) => {
     setAnchorEl(null);
-    setOpen(false)
+    setOpenMenu(false)
     setSelectedIndex(i);
     console.log(`Selected index is now ${i}`)
     console.log(`Value index is now ${value}`)
@@ -113,6 +120,158 @@ const Header = () => {
     }
   }, [value]);
 
+  const tabs = (
+    <>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        textColor= "white"
+        sx={{
+          marginLeft: "auto",
+        }}
+      >
+        <Tab 
+          sx={(theme) => ({
+            ...theme.typography.tab,
+            minWidth: 10,
+            marginLeft: "25px",
+            opacity: value === 0 ? 1 : 0.7,
+          })} 
+          component={Link}
+          to="/"
+          label="Home"
+        />
+        <Tab 
+          sx={(theme) => ({
+            ...theme.typography.tab,
+            minWidth: 10,
+            marginLeft: "25px",
+            opacity: value === 1 ? 1 : 0.7,
+          })} 
+          component={Link}
+          to="/services"
+          label="Services"
+          aria-owns={anchorEl ? "simple-menu" : undefined}
+          aria-haspopup={anchorEl ? "true" : undefined}
+          onMouseOver={(event) => handleClick(event)}
+        />
+        <Tab 
+          sx={(theme) => ({
+            ...theme.typography.tab,
+            minWidth: 10,
+            marginLeft: "25px",
+            opacity: value === 2 ? 1 : 0.7,
+          })}
+          component={Link}
+          to="/revolution"
+          label="The Revolution"
+        />
+        <Tab 
+          sx={(theme) => ({
+            ...theme.typography.tab,
+            minWidth: 10,
+            marginLeft: "25px",
+            opacity: value === 3 ? 1 : 0.7,
+          })} 
+          component={Link}
+          to="/about"
+          label="About Us"
+        />
+        <Tab 
+          sx={(theme) => ({
+            ...theme.typography.tab,
+            minWidth: 10,
+            marginLeft: "25px",
+            opacity: value === 4 ? 1 : 0.7,
+          })} 
+          component={Link}
+          to="/contact"
+          label="Contact Us"
+        />
+      </Tabs>
+      <Button 
+        variant="contained" 
+        color="secondary"
+        sx={(theme) => ({
+          ...theme.typography.estimate,
+          borderRadius: "50px",
+          marginLeft: "50px",
+          marginRight: "25px",
+          height: "45px",
+        })}
+      >
+        Free Estimate
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleClose}
+        sx={(theme) => ({
+          "& .MuiMenu-paper": {
+            backgroundColor:theme.palette.common.blue,
+            color: 'white'
+          }
+        })}
+        anchorOrigin={{
+          vertical: 'top',
+          
+        }}
+        MenuListProps={{
+          onMouseLeave: handleClose,
+        }}
+      >
+        {menuOptions.map((option, i) => 
+          (<MenuItem 
+            onClick={(event) => {handleClose(); setValue(1); handleMenuItemClick(event, i);}} 
+            component={Link} 
+            key={i}
+            sx={(theme) => ({
+              ...theme.typography.tab,
+              opacity: 0.7,
+              "&:hover": {
+                opacity: 1
+              },
+            })}
+            to={option.link}
+            selected={i === selectedIndex && value === 1}
+          >
+            {option.name}
+          </MenuItem>))}
+      </Menu>
+    </>
+  )
+
+  const drawer = (
+    <>
+      <SwipeableDrawer 
+        disableBackdropTransition={!iOS} 
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+      >
+        Example Drawer
+      </SwipeableDrawer>
+      <IconButton 
+        disableRipple
+        sx = {{
+          marginLeft: "auto",
+          "&:hover": {
+            backgroundColor: "transparent"
+          }
+        }}
+        onClick={() => setOpenDrawer(!openDrawer)}
+      >
+        <MenuIcon
+          sx={{
+            height: "50px",
+            width: "50px"
+          }}
+        />
+      </IconButton>      
+    </>
+  )
 
   return (
     <>
@@ -135,134 +294,30 @@ const Header = () => {
                 component="img"
                 sx={{
                   height: "8em",
+                  [theme.breakpoints.down("md")]: {
+                    height: "7em"
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    height: "5.5em",
+                  }
                 }}
                 alt="Company Logos"
                 src={logo}
               ></Box>
             </Button>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              textColor= "white"
-              sx={{
-                marginLeft: "auto",
-              }}
-            >
-              <Tab 
-                sx={(theme) => ({
-                  ...theme.typography.tab,
-                  minWidth: 10,
-                  marginLeft: "25px",
-                  opacity: value === 0 ? 1 : 0.7,
-                })} 
-                component={Link}
-                to="/"
-                label="Home"
-              />
-              <Tab 
-                sx={(theme) => ({
-                  ...theme.typography.tab,
-                  minWidth: 10,
-                  marginLeft: "25px",
-                  opacity: value === 1 ? 1 : 0.7,
-                })} 
-                component={Link}
-                to="/services"
-                label="Services"
-                aria-owns={anchorEl ? "simple-menu" : undefined}
-                aria-haspopup={anchorEl ? "true" : undefined}
-                onMouseOver={(event) => handleClick(event)}
-              />
-              <Tab 
-                sx={(theme) => ({
-                  ...theme.typography.tab,
-                  minWidth: 10,
-                  marginLeft: "25px",
-                  opacity: value === 2 ? 1 : 0.7,
-                })}
-                component={Link}
-                to="/revolution"
-                label="The Revolution"
-              />
-              <Tab 
-                sx={(theme) => ({
-                  ...theme.typography.tab,
-                  minWidth: 10,
-                  marginLeft: "25px",
-                  opacity: value === 3 ? 1 : 0.7,
-                })} 
-                component={Link}
-                to="/about"
-                label="About Us"
-              />
-              <Tab 
-                sx={(theme) => ({
-                  ...theme.typography.tab,
-                  minWidth: 10,
-                  marginLeft: "25px",
-                  opacity: value === 4 ? 1 : 0.7,
-                })} 
-                component={Link}
-                to="/contact"
-                label="Contact Us"
-              />
-            </Tabs>
-            <Button 
-              variant="contained" 
-              color="secondary"
-              sx={(theme) => ({
-                ...theme.typography.estimate,
-                borderRadius: "50px",
-                marginLeft: "50px",
-                marginRight: "25px",
-                height: "45px",
-              })}
-            >
-              Free Estimate
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              sx={(theme) => ({
-                "& .MuiMenu-paper": {
-                  backgroundColor:theme.palette.common.blue,
-                  color: 'white'
-                }
-              })}
-              anchorOrigin={{
-                vertical: 'top',
-                
-              }}
-              MenuListProps={{
-                onMouseLeave: handleClose,
-              }}
-            >
-              {menuOptions.map((option, i) => 
-                (<MenuItem 
-                  onClick={(event) => {handleClose(); setValue(1); handleMenuItemClick(event, i);}} 
-                  component={Link} 
-                  key={i}
-                  sx={(theme) => ({
-                    ...theme.typography.tab,
-                    opacity: 0.7,
-                    "&:hover": {
-                      opacity: 1
-                    },
-                  })}
-                  to={option.link}
-                  selected={i === selectedIndex && value === 1}
-                >
-                  {option.name}
-                </MenuItem>))}
-            </Menu>
+            {matches ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
       <Toolbar
         sx={{
           marginBottom: "3em",
+          [theme.breakpoints.down("md")]: {
+            marginBottom: "2em"
+          },
+          [theme.breakpoints.down("xs")]: {
+            marginBottome: "1.5em",
+          } 
         }}
       />
     </>
