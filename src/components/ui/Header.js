@@ -10,6 +10,7 @@ import { Menu, MenuItem } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { SwipeableDrawer } from '@mui/material';
+import { List, ListItemButton, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.svg'
 
@@ -250,8 +251,120 @@ const Header = () => {
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
+        sx={(theme) => ({
+          "& .MuiDrawer-paper": {
+            backgroundColor: theme.palette.common.blue,
+            color: 'white'
+          }
+        })}
       >
-        Example Drawer
+        <List disablePadding>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(0)}}
+            divider
+            component={Link} 
+            selected={value === 0}
+            to="/"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab,
+               opacity: value === 0 ? 1 : 0.7, 
+              })}
+            >
+              Home
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(1)}}
+            divider
+            component={Link}
+            selected={value === 1}
+            to="/services"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab, 
+               opacity: value === 1 ? 1 : 0.7,
+              })}
+            >
+              Services
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(2)}}
+            divider
+            component={Link}
+            selected={value === 2}
+            to="/revolution"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab,
+               opacity: value === 2 ? 1 : 0.7, 
+              })}  
+            >
+              The Revolution
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(3)}}
+            divider
+            component={Link}
+            selected={value === 3}
+            to="/about"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab,
+               opacity: value === 3 ? 1 : 0.7, 
+              })}
+            >
+              About Us
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(4)}}
+            divider
+            component={Link}
+            selected={value === 4}
+            to="/contact"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab,
+               opacity: value === 4 ? 1 : 0.7, 
+              })}
+            >
+              Contact Us
+            </ListItemText>
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {setOpenDrawer(false); setValue(5)}}
+            divider
+            component={Link}
+            sx={(theme) => ({
+              backgroundColor: theme.palette.common.orange 
+            })}
+            selected={value === 5}
+            to="/estimate"
+          >
+            <ListItemText 
+              disableTypography
+              sx={(theme) => ({
+               ...theme.typography.tab,
+               opacity: value === 0 ? 5 : 0.7,
+              })}
+            >
+              Free Estimate
+            </ListItemText>
+          </ListItemButton>
+        </List>
       </SwipeableDrawer>
       <IconButton 
         disableRipple
