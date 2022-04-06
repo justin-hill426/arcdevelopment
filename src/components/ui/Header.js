@@ -59,136 +59,78 @@ const Header = () => {
   }
 
   const menuOptions = [
-    {name: 'Services', link: '/services'},
-    {name: 'Custom Software Development', link: '/customsoftware'},
-    {name: 'Mobile App Develpment', link: '/mobileapps'},
-    {name: 'Website Development', link: '/websites'},
+    {name: 'Services', link: '/services', activeIndex: 1, selectedIndex: 0},
+    {name: 'Custom Software Development', link: '/customsoftware', activeIndex: 1, selectedIndex: 1},
+    {name: 'Mobile App Develpment', link: '/mobileapps', activeIndex: 1, selectedIndex: 2},
+    {name: 'Website Development', link: '/websites', activeIndex: 1, selectedIndex: 3},
+  ]
+
+  const routes = [
+    {name: "Home", link: "/", activeIndex: 0},
+    {
+      name: "Services", 
+      link: "/services", 
+      activeIndex: 1,
+      ariaOwns: anchorEl ? "simple-menu" : undefined,
+      ariaPopup: anchorEl ? "true" : undefined,
+      mouseOver: event => handleClick(event)
+    },
+    {name: "The Revolution", link: "/revolution", activeIndex: 2},
+    {name: "About Us", link: "/about", activeIndex: 3},
+    {name: "Contact Us", link: "/contact", activeIndex: 4},
   ]
 
   useEffect(() => {
-    switch(window.location.pathname) {
-      case "/":
-        if(value !== 0) {
-          setValue(0);
-        }
-        break;
-      case "/services":
-        if(value !== 1) {
-          setValue(1);
-          setSelectedIndex(0);
-        }
-        break;
-      case "/customsoftware":
-        if(value !== 1) {
-          setValue(1);
-          setSelectedIndex(1);
-        }
-        break;
-      case "/mobileapps":
-        if(value !== 1) {
-          setValue(1);
-          setSelectedIndex(2);
-        }
-        break;
-      case "/websites":
-        if(value !== 1) {
-          setValue(1);
-          setSelectedIndex(3);
-        }
-        break;
-        case "/revolution":
-          if(value !== 2) {
-            setValue(2);
-          }
-          break;
-        case "/about":
-          if(value !== 3) {
-            setValue(3);
-          }
-          break;
-        case "/contact":
-          if(value !== 4) {
-            setValue(4);
+    [...menuOptions, ...routes].forEach(route => {
+      switch(window.location.pathname) {
+        case `${route.link}`:
+          if(value !== route.activeIndex) {
+            setValue(route.activeIndex);
+            if (
+              route.selectedIndex &&
+              route.selectedIndex !== selectedIndex
+            ) {
+              setSelectedIndex(route.selectedIndex);
+            }
           }
           break;
         case "/estimate":
-          if(value !== 5) {
-            setValue(5);
-          }
+          setValue(5);
           break;
-      default:
-        break;
-    }
-  }, [value]);
+        default:
+          break;
+        }
+      });
+    }, [value, menuOptions, selectedIndex, routes]);
 
   const tabs = (
     <>
       <Tabs
         value={value}
         onChange={handleChange}
-        textColor= "white"
+        textColor= "inherit"
         sx={{
           marginLeft: "auto",
         }}
       >
-        <Tab 
-          sx={(theme) => ({
+        {
+          routes.map((route, index) => (
+          <Tab
+            key={`${route}${index}`}
+            sx={(theme) => ({
             ...theme.typography.tab,
             minWidth: 10,
             marginLeft: "25px",
-            opacity: value === 0 ? 1 : 0.7,
-          })} 
-          component={Link}
-          to="/"
-          label="Home"
-        />
-        <Tab 
-          sx={(theme) => ({
-            ...theme.typography.tab,
-            minWidth: 10,
-            marginLeft: "25px",
-            opacity: value === 1 ? 1 : 0.7,
-          })} 
-          component={Link}
-          to="/services"
-          label="Services"
-          aria-owns={anchorEl ? "simple-menu" : undefined}
-          aria-haspopup={anchorEl ? "true" : undefined}
-          onMouseOver={(event) => handleClick(event)}
-        />
-        <Tab 
-          sx={(theme) => ({
-            ...theme.typography.tab,
-            minWidth: 10,
-            marginLeft: "25px",
-            opacity: value === 2 ? 1 : 0.7,
+            opacity: value === route.activeIndex ? 1 : 0.7,
           })}
-          component={Link}
-          to="/revolution"
-          label="The Revolution"
-        />
-        <Tab 
-          sx={(theme) => ({
-            ...theme.typography.tab,
-            minWidth: 10,
-            marginLeft: "25px",
-            opacity: value === 3 ? 1 : 0.7,
-          })} 
-          component={Link}
-          to="/about"
-          label="About Us"
-        />
-        <Tab 
-          sx={(theme) => ({
-            ...theme.typography.tab,
-            minWidth: 10,
-            marginLeft: "25px",
-            opacity: value === 4 ? 1 : 0.7,
-          })} 
-          component={Link}
-          to="/contact"
-          label="Contact Us"
-        />
+            component={Link}
+            to={route.link}
+            label={route.name}
+            aria-owns={route.ariaOwns} 
+            aria-haspopup={route.ariaPopup}
+            onMouseOver={route.mouseOver}
+          />
+        ))}
       </Tabs>
       <Button 
         variant="contained" 
@@ -208,15 +150,17 @@ const Header = () => {
         anchorEl={anchorEl}
         open={openMenu}
         onClose={handleClose}
+        keepMounted
         sx={(theme) => ({
           "& .MuiMenu-paper": {
             backgroundColor:theme.palette.common.blue,
             color: 'white'
-          }
+          },
+          zIndex: theme.zIndex.modal + 2,
         })}
         anchorOrigin={{
           vertical: 'top',
-          
+          horizontal: 'left',
         }}
         MenuListProps={{
           onMouseLeave: handleClose,
@@ -258,92 +202,40 @@ const Header = () => {
           }
         })}
       >
+        <Toolbar
+          sx={{
+            marginBottom: "3em",
+            [theme.breakpoints.down("md")]: {
+              marginBottom: "2em"
+            },
+            [theme.breakpoints.down("xs")]: {
+              marginBottome: "1.5em",
+            } 
+          }}
+        />
         <List disablePadding>
-          <ListItemButton
-            onClick={() => {setOpenDrawer(false); setValue(0)}}
-            divider
-            component={Link} 
-            selected={value === 0}
-            to="/"
-          >
-            <ListItemText 
-              disableTypography
-              sx={(theme) => ({
-               ...theme.typography.tab,
-               opacity: value === 0 ? 1 : 0.7, 
-              })}
-            >
-              Home
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {setOpenDrawer(false); setValue(1)}}
-            divider
-            component={Link}
-            selected={value === 1}
-            to="/services"
-          >
-            <ListItemText 
-              disableTypography
-              sx={(theme) => ({
-               ...theme.typography.tab, 
-               opacity: value === 1 ? 1 : 0.7,
-              })}
-            >
-              Services
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {setOpenDrawer(false); setValue(2)}}
-            divider
-            component={Link}
-            selected={value === 2}
-            to="/revolution"
-          >
-            <ListItemText 
-              disableTypography
-              sx={(theme) => ({
-               ...theme.typography.tab,
-               opacity: value === 2 ? 1 : 0.7, 
-              })}  
-            >
-              The Revolution
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {setOpenDrawer(false); setValue(3)}}
-            divider
-            component={Link}
-            selected={value === 3}
-            to="/about"
-          >
-            <ListItemText 
-              disableTypography
-              sx={(theme) => ({
-               ...theme.typography.tab,
-               opacity: value === 3 ? 1 : 0.7, 
-              })}
-            >
-              About Us
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton
-            onClick={() => {setOpenDrawer(false); setValue(4)}}
-            divider
-            component={Link}
-            selected={value === 4}
-            to="/contact"
-          >
-            <ListItemText 
-              disableTypography
-              sx={(theme) => ({
-               ...theme.typography.tab,
-               opacity: value === 4 ? 1 : 0.7, 
-              })}
-            >
-              Contact Us
-            </ListItemText>
-          </ListItemButton>
+          {
+            routes.map((route, index) => (
+              <ListItemButton
+                key={`${route}${route.activeIndex}`}
+                onClick={() => {setOpenDrawer(false); setValue(route.activeIndex)}}
+                divider
+                component={Link}
+                selected={value === route.activeIndex}
+                to={route.link}
+              >
+                <ListItemText
+                  disableTypography
+                  sx={(theme) => ({
+                    ...theme.typography.tab,
+                    opacity: value === route.activeIndex ? 1 : 0.7,
+                  })}
+                >
+                  {route.name}
+                </ListItemText>
+              </ListItemButton>
+            ))
+          }
           <ListItemButton
             onClick={() => {setOpenDrawer(false); setValue(5)}}
             divider
@@ -389,7 +281,11 @@ const Header = () => {
   return (
     <>
       <ElevationScroll>
-        <AppBar>
+        <AppBar
+          sx={(theme) => ({
+            zIndex: theme.zIndex.modal + 1,
+          })}
+        >
           <Toolbar disableGutters>
             <Button 
               component={Link} 
